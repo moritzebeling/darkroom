@@ -18,21 +18,7 @@
 
 <svelte:window on:mousemove={handle} />
 
-<div>
-    {positionX} {positionY}
-</div>
+Position {positionX} {positionY}
 
 <style>
-
-    div {
-        position: fixed;
-        z-index: 100;
-        bottom: 1rem;
-        left: 1rem;
-        background-color: #fff;
-        color: #000;
-        border-radius: 2rem;
-        padding: 0.3em 0.7em;
-    }
-
 </style>

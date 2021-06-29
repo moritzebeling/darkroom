@@ -66,7 +66,7 @@ io.on('connection', (socket) => {
 		});
 	});
 
-	socket.on('disconnect user', () => {
+	socket.on('disconnect user', (user) => {
 		if (addedUser) {
 			numUsers--;
 			console.log(`disconnect user, ${numUsers} remaining`);
