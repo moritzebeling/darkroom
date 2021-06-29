@@ -28,8 +28,7 @@
 <svelte:window on:mousemove={handle} />
 
 Position
-<code>{positionX}</code>
-<code>{positionY}</code>
+<code>{positionX}</code>•<code>{positionY}</code>
 
 <style>
 

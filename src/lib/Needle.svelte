@@ -8,7 +8,7 @@
 </script>
 
 <article class="bubble" style="left:{user.position.x}px;top:{user.position.y}px;">
-    {user.id}: {user.name} {user.position.x} {user.position.y}
+    #{user.id} {user.position.x}•{user.position.y}
 </article>
 
 <style>
