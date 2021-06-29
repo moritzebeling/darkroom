@@ -2,7 +2,7 @@
 config
 */
 
-const API = 'http://localhost:5000';
+const API = `${window.location.protocol}//${window.location.host}`;
 
 /*
 store
