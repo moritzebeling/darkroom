@@ -3,9 +3,11 @@
 	import { onMount } from 'svelte';
 	import { createSocket, socket } from './lib/stores/socket.js';
 	import { User, user } from './lib/stores/user.js';
-	import { users, numUsers } from './lib/stores/users.js';
+	import { numUsers } from './lib/stores/users.js';
+	import { addAlert } from './lib/stores/alerts.js';
 	import Connected from './lib/Connected.svelte';
 	import Position from './lib/Position.svelte';
+	import Alerts from './lib/Alerts.svelte';
 
 	let newUser = new User;
 	let connected = false;
@@ -26,6 +28,7 @@
 			connected = true;
 			$user.setId( data.user.id );
 			numUsers.set( data.numUsers );
+			addAlert('Connected');
 		});
 
 	}
@@ -37,6 +40,8 @@
 </script>
 
 <svelte:window on:beforeunload={disconnect} />
+
+<Alerts />
 
 {#if $socket}
 
@@ -51,10 +56,6 @@
 	</div>
 
 	{#if connected}
-
-		<div>{$user.id}</div>
-
-		<div>Connected</div>
 
 		{#if $numUsers > 1}
 			<div>{$numUsers} users online</div>

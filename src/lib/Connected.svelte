@@ -3,6 +3,7 @@
     import { socket } from './stores/socket.js';
     import { User } from './stores/user.js';
     import { numUsers } from './stores/users.js';
+    import { addAlert } from './stores/alerts.js';
 	import Neelde from './Needle.svelte';
 
 	let users = {};
@@ -11,6 +12,7 @@
 		console.log('user joined', data);
 		users[data.user.id] = new User(data.user);
 		numUsers.set( data.numUsers );
+		addAlert('New User');
 	});
 
     $socket.on("user left", (data)=>{
