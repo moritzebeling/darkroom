@@ -1,3 +1,7 @@
+/*
+reset
+*/
+
 * {
 	border: none;
 	margin: 0;
@@ -5,6 +9,13 @@
 	box-sizing: border-box;
 	font: inherit;
 }
+ul {
+	list-style: none;
+}
+
+/*
+global styles
+*/
 
 html {
 	font-size: 16px;
@@ -13,4 +24,12 @@ html {
 
 body {
 	background-color: #ccc;
+}
+
+.bubbles > div,
+.bubble {
+	margin: 0.2rem;
+	border-radius: 2rem;
+	padding: 0.3em 0.7em;
+	background-color: #fff;
 }

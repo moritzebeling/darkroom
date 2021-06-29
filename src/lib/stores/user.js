@@ -8,12 +8,21 @@ definition
 
 export class User {
 
-    constructor(){
-        this.name = 'Anonymous';
-        this.position = {
+    constructor( options = {} ){
+        this.name = options.name || 'Anonymous';
+        this.id = options.id || false;
+        this.position = options.position || {
             x: 0,
             y: 0,
         };
+    }
+
+    setPosition( position ){
+        this.position = position;
+    }
+
+    setId( id = false ){
+        this.id = id;
     }
 
 }
