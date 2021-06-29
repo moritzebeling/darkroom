@@ -18,7 +18,14 @@
 
 <svelte:window on:mousemove={handle} />
 
-Position {positionX} {positionY}
+Position
+<code>{positionX}</code>
+<code>{positionY}</code>
 
 <style>
+
+    code {
+        font-family: monospace;
+    }
+
 </style>
