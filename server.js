@@ -1,4 +1,7 @@
-// Setup basic express server
+/*
+server
+*/
+
 const express = require('express');
 const app = express();
 const path = require('path');
@@ -10,10 +13,30 @@ server.listen(port, () => {
 	console.log('Server listening at port %d', port);
 });
 
-// Routing
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Chatroom
+
+/*
+utilities
+*/
+
+function randomString(length) {
+	let result = '';
+	let budget = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+	var max = budget.length;
+	for ( var i = 0; i < length; i++ ) {
+		result += budget.charAt( Math.floor(Math.random() * max) );
+	}
+	return result;
+}
+
+function userId(){
+	return randomString(16);
+}
+
+/*
+socket app
+*/
 
 let numUsers = 0;
 
@@ -41,6 +64,10 @@ io.on('connection', (socket) => {
 	socket.on('connect user', (user) => {
 		if (addedUser) return;
 
+		user = {...user,
+			id: userId()
+		};
+
 		socket.user = user;
 		numUsers++;
 		addedUser = true;
@@ -49,6 +76,7 @@ io.on('connection', (socket) => {
 
 		// emit to user
 		socket.emit('connected', {
+			user: user,
 			numUsers: numUsers
 		});
 
@@ -60,7 +88,6 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('update user', (user) => {
-		console.log('update user');
 		socket.broadcast.emit('user updated', {
 			user: user
 		});

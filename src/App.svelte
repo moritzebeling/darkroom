@@ -24,6 +24,7 @@
 		$socket.on('connected', (data)=>{
 			console.log('connected', data);
 			connected = true;
+			$user.setId( data.user.id );
 			numUsers.set( data.numUsers );
 		});
 
@@ -43,13 +44,16 @@
 
 {/if}
 
-<section class="top">
+<section class="bubbles">
 
 	<div>
 		<Position />
 	</div>
 
 	{#if connected}
+
+		<div>{$user.id}</div>
+
 		<div>Connected</div>
 
 		{#if $numUsers > 1}
@@ -75,12 +79,6 @@
 		padding: 0.8rem;
 		color: #000;
 		display: flex;
-	}
-	section div {
-		margin: 0.2rem;
-		border-radius: 2rem;
-		padding: 0.3em 0.7em;
-		background-color: #fff;
 	}
 
 </style>
