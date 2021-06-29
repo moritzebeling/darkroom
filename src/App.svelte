@@ -8,6 +8,7 @@
 	import Connected from './lib/Connected.svelte';
 	import Position from './lib/Position.svelte';
 	import Alerts from './lib/Alerts.svelte';
+	import Textarea from './lib/Textarea.svelte';
 
 	let newUser = new User;
 	let connected = false;
@@ -41,15 +42,13 @@
 
 <svelte:window on:beforeunload={disconnect} />
 
-<Alerts />
-
 {#if $socket}
 
 	<Connected />
 
 {/if}
 
-<section class="bubbles">
+<aside class="bubbles">
 
 	<div>
 		<Position />
@@ -67,14 +66,18 @@
 		<div>Connecting...</div>
 	{/if}
 
-</section>
+	<Alerts />
+
+</aside>
+
+<!-- <Textarea /> -->
 
 <style>
 
-	section {
+	aside {
 		position: fixed;
 		z-index: 100;
-		bottom: 0;
+		top: 0;
 		left: 0;
 		width: 100%;
 		padding: 0.8rem;
