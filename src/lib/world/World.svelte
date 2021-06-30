@@ -35,8 +35,8 @@
 
         // scene
         scene = new THREE.Scene();
-        scene.background = new THREE.Color( 0xffffff );
-        scene.fog = new THREE.Fog( 0xffffff, 0, 750 );
+        scene.background = new THREE.Color( 0xcccccc );
+        scene.fog = new THREE.Fog( 0xcccccc, 100, 500 );
 
         // light
         const light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
@@ -59,72 +59,49 @@
 
         raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
-        // floor
+        // floor 1 x 1 meter Raster
 
-        let floorGeometry = new THREE.PlaneGeometry( 2000, 2000, 100, 100 );
-        floorGeometry.rotateX( - Math.PI / 2 );
+        const lineMaterial = new THREE.LineBasicMaterial( { color: 0xffffff, linewidth: 2 } );
 
-        // vertex displacement
-
-        let position = floorGeometry.attributes.position;
-
-        for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-            vertex.fromBufferAttribute( position, i );
-
-            vertex.x += Math.random() * 20 - 10;
-            vertex.y += Math.random() * 2;
-            vertex.z += Math.random() * 20 - 10;
-
-            position.setXYZ( i, vertex.x, vertex.y, vertex.z );
-
+        var geometry = new THREE.BufferGeometry();
+        var size = 1000;
+        var grid = 10;
+        var position = [];
+        for ( var i = 0; i <= size; i+= grid ) {
+            position.push( i-(size/2), 0, -size/2, i-(size/2), 0, size/2 );
+            position.push( -size/2, 0, i-(size/2), size/2, 0, i-(size/2) );
         }
-
-        floorGeometry = floorGeometry.toNonIndexed(); // ensure each face has unique vertices
-
-        position = floorGeometry.attributes.position;
-        const colorsFloor = [];
-
-        for ( let i = 0, l = position.count; i < l; i ++ ) {
-
-            color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-            colorsFloor.push( color.r, color.g, color.b );
-
-        }
-
-        floorGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsFloor, 3 ) );
-
-        const floorMaterial = new THREE.MeshBasicMaterial( { vertexColors: true } );
-
-        const floor = new THREE.Mesh( floorGeometry, floorMaterial );
-        scene.add( floor );
+        geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( position, 3 ) );
+        var lineSegments = new THREE.LineSegments( geometry, lineMaterial );
+        lineSegments.computeLineDistances();
+        // objects.push( lineSegments );
+        scene.add( lineSegments );
 
         // objects
 
+        const solidMaterial = new THREE.MeshBasicMaterial( { color: 0xcccccc, linewidth: 2 } );
+
         const boxGeometry = new THREE.BoxGeometry( 20, 20, 20 ).toNonIndexed();
+        const wireframe = new THREE.WireframeGeometry( boxGeometry );
 
-        position = boxGeometry.attributes.position;
-        const colorsBox = [];
+        for ( let i = 0; i < 100; i ++ ) {
 
-        for ( let i = 0, l = position.count; i < l; i ++ ) {
+            const box = new THREE.Mesh( boxGeometry, solidMaterial );
+            const line = new THREE.LineSegments( wireframe, lineMaterial );
 
-            color.setHSL( Math.random() * 0.3 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-            colorsBox.push( color.r, color.g, color.b );
-
-        }
-
-        boxGeometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colorsBox, 3 ) );
-
-        for ( let i = 0; i < 500; i ++ ) {
-
-            const boxMaterial = new THREE.MeshPhongMaterial( { specular: 0xffffff, flatShading: true, vertexColors: true } );
-            boxMaterial.color.setHSL( Math.random() * 0.2 + 0.5, 0.75, Math.random() * 0.25 + 0.75 );
-
-            const box = new THREE.Mesh( boxGeometry, boxMaterial );
             box.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
             box.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
             box.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
 
+            line.position.x = box.position.x;
+            line.position.y = box.position.y;
+            line.position.z = box.position.z;
+
+            // line.material.depthTest = false;
+            // line.material.transparent = false;
+            // line.renderOrder = 1;
+
+            scene.add( line );
             scene.add( box );
             objects.push( box );
 
