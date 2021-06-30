@@ -20,13 +20,11 @@
 
 </script>
 
-<!-- <aside> -->
-    {#each list as item}
-        <div class="bubble" in:fly={{ duration: 200, y: 0, x: 100 }} out:fade={{ duration: 200 }}>
-            {item}
-        </div>
-    {/each}
-<!-- </aside> -->
+{#each list as item}
+    <div class="bubble" in:fly={{ duration: 200, y: 0, x: 100 }} out:fade={{ duration: 200 }}>
+        {item}
+    </div>
+{/each}
 
 <style>
 

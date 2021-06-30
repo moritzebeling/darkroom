@@ -95,7 +95,8 @@
             const line = new THREE.LineSegments( wireframe, lineMaterial );
 
             box.position.x = Math.floor( Math.random() * 20 - 10 ) * 30;
-            box.position.y = height / 2; // vertical
+            box.position.y = Math.max( height / 2, Math.floor( Math.random() * 20 ) * 4 + (height / 2) - 80 );
+            // box.position.y = 10; // vertical
             box.position.z = Math.floor( Math.random() * 20 - 10 ) * 30;
 
             line.position.x = box.position.x;
