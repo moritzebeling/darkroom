@@ -2,6 +2,7 @@
 
     import * as THREE from 'three';
     import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
+    import { addAlert } from '../stores/alerts.js';
 
     let camera, scene, renderer, controls;
 
@@ -10,6 +11,7 @@
     let raycaster;
 
     let playing = false;
+    let loaded = false;
 
     let moveForward = false;
     let moveBackward = false;
@@ -54,56 +56,6 @@
 
         // add scene
         scene.add( controls.getObject() );
-
-        // interaction
-        const onKeyDown = function ( event ) {
-            switch ( event.code ) {
-                case 'ArrowUp':
-                case 'KeyW':
-                    moveForward = true;
-                    break;
-                case 'ArrowLeft':
-                case 'KeyA':
-                    moveLeft = true;
-                    break;
-                case 'ArrowDown':
-                case 'KeyS':
-                    moveBackward = true;
-                    break;
-                case 'ArrowRight':
-                case 'KeyD':
-                    moveRight = true;
-                    break;
-                case 'Space':
-                    if ( canJump === true ) velocity.y += 350;
-                    canJump = false;
-                    break;
-            }
-        };
-
-        const onKeyUp = function ( event ) {
-            switch ( event.code ) {
-                case 'ArrowUp':
-                case 'KeyW':
-                    moveForward = false;
-                    break;
-                case 'ArrowLeft':
-                case 'KeyA':
-                    moveLeft = false;
-                    break;
-                case 'ArrowDown':
-                case 'KeyS':
-                    moveBackward = false;
-                    break;
-                case 'ArrowRight':
-                case 'KeyD':
-                    moveRight = false;
-                    break;
-            }
-        };
-
-        document.addEventListener( 'keydown', onKeyDown );
-        document.addEventListener( 'keyup', onKeyUp );
 
         raycaster = new THREE.Raycaster( new THREE.Vector3(), new THREE.Vector3( 0, - 1, 0 ), 0, 10 );
 
@@ -178,28 +130,69 @@
 
         }
 
-        //
+        // renderer
 
         renderer = new THREE.WebGLRenderer( { antialias: true } );
         renderer.setPixelRatio( window.devicePixelRatio );
         renderer.setSize( window.innerWidth, window.innerHeight );
         element.appendChild( renderer.domElement );
 
-        //
-
-        window.addEventListener( 'resize', onWindowResize );
-
         animate();
+        loaded = true;
 
     }
 
-    function onWindowResize() {
+    // interaction
+    const handleKeydown = function ( event ) {
+        switch ( event.code ) {
+            case 'ArrowUp':
+            case 'KeyW':
+                moveForward = true;
+                break;
+            case 'ArrowLeft':
+            case 'KeyA':
+                moveLeft = true;
+                break;
+            case 'ArrowDown':
+            case 'KeyS':
+                moveBackward = true;
+                break;
+            case 'ArrowRight':
+            case 'KeyD':
+                moveRight = true;
+                break;
+            case 'Space':
+                if ( canJump === true ) velocity.y += 350;
+                canJump = false;
+                break;
+        }
+    };
 
+    const handleKeyup = function ( event ) {
+        switch ( event.code ) {
+            case 'ArrowUp':
+            case 'KeyW':
+                moveForward = false;
+                break;
+            case 'ArrowLeft':
+            case 'KeyA':
+                moveLeft = false;
+                break;
+            case 'ArrowDown':
+            case 'KeyS':
+                moveBackward = false;
+                break;
+            case 'ArrowRight':
+            case 'KeyD':
+                moveRight = false;
+                break;
+        }
+    };
+
+    function handleResize() {
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-
         renderer.setSize( window.innerWidth, window.innerHeight );
-
     }
 
     function animate() {
@@ -262,13 +255,20 @@
 
     function enter(){
         controls.lock();
+        addAlert('Press ESC to stop');
     }
 
 </script>
 
+<svelte:window on:resize={handleResize} on:keydown={handleKeydown} on:keyup={handleKeyup} />
+
 {#if playing === false}
     <div class="ui">
-        <button class="bubble" on:click={enter}>Play</button>
+
+        {#if loaded}
+            <button class="bubble" on:click={enter}>Enter</button>
+        {/if}
+
     </div>
 {/if}
 
