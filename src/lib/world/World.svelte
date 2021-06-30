@@ -3,6 +3,7 @@
     import * as THREE from 'three';
     import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
     import { addAlert } from '../stores/alerts.js';
+    import { position } from '../stores/position.js';
 
     let camera, scene, renderer, controls;
 
@@ -174,6 +175,11 @@
         renderer.setSize( window.innerWidth, window.innerHeight );
     }
 
+    let positionX = 0;
+    let positionZ = 0;
+
+    $: position.set({ x: positionX, y: positionZ });
+
     function animate() {
 
         requestAnimationFrame( animate );
@@ -214,6 +220,9 @@
             controls.moveForward( - velocity.z * delta );
 
             controls.getObject().position.y += ( velocity.y * delta ); // new behavior
+
+            positionX = Math.round( controls.getObject().position.x / 5 );
+            positionZ = Math.round( controls.getObject().position.z / 5 );
 
             if ( controls.getObject().position.y < 10 ) {
 
