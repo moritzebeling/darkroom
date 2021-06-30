@@ -12,6 +12,9 @@ reset
 ul {
 	list-style: none;
 }
+button {
+	cursor: pointer;
+}
 
 /*
 global styles
@@ -32,4 +35,8 @@ body {
 	border-radius: 2rem;
 	padding: 0.3em 0.7em;
 	background-color: #fff;
+}
+
+canvas {
+	display: block;
 }

@@ -12,12 +12,14 @@
         positionX = event.clientX || 0;
         positionY = event.clientY || 0;
 
-        $user.setPosition({
-            x: positionX,
-            y: positionY
-        });
+        if( $user ){
+            $user.setPosition({
+                x: positionX,
+                y: positionY
+            });
 
-        $socket.emit('update user', $user);
+            $socket.emit('update user', $user);
+        }
 
     }
 

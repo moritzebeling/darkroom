@@ -8,7 +8,7 @@
 	import Connected from './lib/Connected.svelte';
 	import Position from './lib/Position.svelte';
 	import Alerts from './lib/Alerts.svelte';
-	import Textarea from './lib/Textarea.svelte';
+	import World from './lib/world/World.svelte';
 
 	let newUser = new User;
 	let connected = false;
@@ -70,7 +70,7 @@
 
 </aside>
 
-<!-- <Textarea /> -->
+<World />
 
 <style>
 
