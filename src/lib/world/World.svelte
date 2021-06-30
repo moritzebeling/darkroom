@@ -36,7 +36,7 @@
         // scene
         scene = new THREE.Scene();
         scene.background = new THREE.Color( 0xcccccc );
-        scene.fog = new THREE.Fog( 0xcccccc, 100, 500 );
+        scene.fog = new THREE.Fog( 0xcccccc, 100, 200 );
 
         // light
         const light = new THREE.HemisphereLight( 0xeeeeff, 0x777788, 0.75 );
@@ -74,32 +74,33 @@
         geometry.addAttribute( 'position', new THREE.Float32BufferAttribute( position, 3 ) );
         var lineSegments = new THREE.LineSegments( geometry, lineMaterial );
         lineSegments.computeLineDistances();
-        // objects.push( lineSegments );
         scene.add( lineSegments );
 
         // objects
 
         const solidMaterial = new THREE.MeshBasicMaterial( { color: 0xcccccc, linewidth: 2 } );
 
-        const boxGeometry = new THREE.BoxGeometry( 20, 20, 20 ).toNonIndexed();
-        const wireframe = new THREE.WireframeGeometry( boxGeometry );
+        function random(){
+            return Math.ceil( Math.random() * 6 ) * 10;
+        }
 
-        for ( let i = 0; i < 100; i ++ ) {
+        for ( let i = 0; i < 200; i ++ ) {
+
+            let height = random();
+
+            const boxGeometry = new THREE.BoxGeometry( 20, height, 20 ).toNonIndexed();
+            const wireframe = new THREE.WireframeGeometry( boxGeometry );
 
             const box = new THREE.Mesh( boxGeometry, solidMaterial );
             const line = new THREE.LineSegments( wireframe, lineMaterial );
 
-            box.position.x = Math.floor( Math.random() * 20 - 10 ) * 20;
-            box.position.y = Math.floor( Math.random() * 20 ) * 20 + 10;
-            box.position.z = Math.floor( Math.random() * 20 - 10 ) * 20;
+            box.position.x = Math.floor( Math.random() * 20 - 10 ) * 30;
+            box.position.y = height / 2; // vertical
+            box.position.z = Math.floor( Math.random() * 20 - 10 ) * 30;
 
             line.position.x = box.position.x;
             line.position.y = box.position.y;
             line.position.z = box.position.z;
-
-            // line.material.depthTest = false;
-            // line.material.transparent = false;
-            // line.renderOrder = 1;
 
             scene.add( line );
             scene.add( box );
