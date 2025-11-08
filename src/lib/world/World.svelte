@@ -251,19 +251,20 @@
 <svelte:window on:resize={handleResize} on:keydown={handleKeydown} on:keyup={handleKeyup} />
 
 {#if playing === false}
-    <div class="ui">
+    <div class="full ui">
 
         {#if loaded}
             <button class="bubble" on:click={enter}>Enter</button>
         {/if}
+        <div class="bubble">Use W A S D Space to navigate</div>
 
     </div>
 {/if}
 
-<div class="container" use:init></div>
+<div class="full container" use:init></div>
 
 <style>
-    div {
+    .full {
         position: fixed;
         top: 0;
         left: 0;
